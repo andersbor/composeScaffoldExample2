@@ -15,9 +15,12 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.BottomAppBarDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
@@ -31,6 +34,7 @@ import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -69,7 +73,28 @@ fun ScaffoldExample() {
                 },
                 actions = {
                     IconButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Default.Settings, contentDescription = "Add")
+                        Icon(Icons.Default.Settings, contentDescription = "Settings")
+                    }
+                    IconButton(onClick = { presses++ }) {
+                        Icon(Icons.Default.Add, contentDescription = "Add")
+                    }
+                    var expanded by remember { mutableStateOf(false) }
+                    IconButton(onClick = { expanded = !expanded }) {
+                        Icon(Icons.Filled.MoreVert, contentDescription = "More options")
+                    }
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false },
+                    ) {
+                        DropdownMenuItem(text = { Text("Option 1") },
+                            onClick = { /* Handle click */
+                                expanded = false
+                            })
+                        DropdownMenuItem(text = { Text("Option 2") },
+                            onClick = { /* Handle click */
+                                expanded = false
+                            })
+                        // Add more options as needed
                     }
                 }
             )
@@ -104,6 +129,7 @@ fun ScaffoldExample() {
                     .align(CenterHorizontally)
                     .clickable { presses++ }
             )
+            // https://developer.android.com/develop/ui/compose/modifiers#order-modifier-matters
             Text(
                 text = "Even more content",
                 modifier = Modifier
