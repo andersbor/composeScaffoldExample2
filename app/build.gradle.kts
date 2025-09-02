@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.scaffoldexample2"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.scaffoldexample2"
@@ -68,5 +68,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // https://stackoverflow.com/questions/65665563/android-jetpack-compose-icons-doesnt-contain-some-of-the-material-icons
-    implementation ("androidx.compose.material:material-icons-extended:1.6.8")
+    implementation ("androidx.compose.material:material-icons-extended:1.7.8")
 }

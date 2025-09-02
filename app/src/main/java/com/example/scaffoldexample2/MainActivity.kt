@@ -5,10 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
@@ -40,6 +43,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -60,7 +64,7 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScaffoldExample() {
-    var presses by remember { mutableIntStateOf(0) }
+    var clickCount by remember { mutableIntStateOf(0) }
 
     Scaffold(
         topBar = {
@@ -76,24 +80,24 @@ fun ScaffoldExample() {
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(Icons.Default.Settings, contentDescription = "Settings")
                     }
-                    IconButton(onClick = { presses++ }) {
+                    IconButton(onClick = { clickCount++ }) {
                         Icon(Icons.Default.Add, contentDescription = "Add")
                     }
-                    var expanded by remember { mutableStateOf(false) }
-                    IconButton(onClick = { expanded = !expanded }) {
+                    var isDropdownOpen by remember { mutableStateOf(false) }
+                    IconButton(onClick = { isDropdownOpen = !isDropdownOpen }) {
                         Icon(Icons.Filled.MoreVert, contentDescription = "More options")
                     }
                     DropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false },
+                        expanded = isDropdownOpen,
+                        onDismissRequest = { isDropdownOpen = false },
                     ) {
                         DropdownMenuItem(text = { Text("Option 1") },
                             onClick = { /* Handle click */
-                                expanded = false
+                                isDropdownOpen = false
                             })
                         DropdownMenuItem(text = { Text("Option 2") },
                             onClick = { /* Handle click */
-                                expanded = false
+                                isDropdownOpen = false
                             })
                         // Add more options as needed
                     }
@@ -103,8 +107,8 @@ fun ScaffoldExample() {
         bottomBar = { MyButtonBar() },
         // Generally, do not use two floating action buttons on the same screen.
         floatingActionButton = {
-            FloatingActionButton(onClick = { presses++ }) {
-                Icon(Icons.Default.Close, contentDescription = "Add")
+            FloatingActionButton(onClick = { clickCount++ }) {
+                Icon(Icons.Default.Close, contentDescription = "Increment")
             }
         }
     ) { innerPadding ->
@@ -118,7 +122,7 @@ fun ScaffoldExample() {
                 """
                     This is an example of a scaffold. It uses the Scaffold composable's parameters to create a screen with a simple top app bar, bottom app bar, and floating action button.
                     It also contains some basic inner content, such as this text.
-                    You have pressed the floating action button $presses times.
+                    You have pressed the floating action button $clickCount times.
                 """.trimIndent(),
             )
             Text(
@@ -128,25 +132,35 @@ fun ScaffoldExample() {
                     .padding(20.dp)
                     //.fillMaxWidth() // not good with CenterHorizontally
                     .align(CenterHorizontally)
-                    .clickable { presses++ }
+                    .clickable { clickCount++ }
             )
             // https://developer.android.com/develop/ui/compose/modifiers#order-modifier-matters
-            Text(
+            /*Text(
                 text = "Even more content",
                 modifier = Modifier
                     .padding(20.dp)
                     .background(Color.Green)
                     .align(CenterHorizontally)
-                    .clickable { presses++ }
-            )
+                    .clickable { clickCount++ }
+            )*/
+            // https://stackoverflow.com/questions/73654402/is-there-a-way-to-create-and-apply-a-style-to-multiple-elements-in-compose-like
+            val modifier = Modifier
+                .shadow(1.dp, CircleShape)
+                .border(1.dp, Color.Red)
+                .size(100.dp)
+                .background(Color.Yellow)
+                .padding(10.dp)
+
+            //Text(text = "Something", modifier = modifier)
+            //Text(text = "Something else", modifier = modifier)
         }
     }
 }
 
 @Composable
-fun MyButtonBar() {
+fun MyButtonBar(modifier: Modifier = Modifier) {
     // https://developer.android.com/develop/ui/compose/components/app-bars#bottom
-    BottomAppBar(
+    BottomAppBar(modifier = modifier,
         actions = {
             IconButton(onClick = { /* do something */ }) {
                 Icon(Icons.Filled.Check, contentDescription = "Localized description")
