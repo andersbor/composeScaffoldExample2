@@ -77,7 +77,7 @@ fun ScaffoldExample() {
                     Text("Top app bar")
                 },
                 actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { /*TODO iconbutton action */ }) {
                         Icon(Icons.Default.Settings, contentDescription = "Settings")
                     }
                     IconButton(onClick = { clickCount++ }) {
@@ -135,24 +135,24 @@ fun ScaffoldExample() {
                     .clickable { clickCount++ }
             )
             // https://developer.android.com/develop/ui/compose/modifiers#order-modifier-matters
-            /*Text(
+            Text(
                 text = "Even more content",
                 modifier = Modifier
                     .padding(20.dp)
                     .background(Color.Green)
                     .align(CenterHorizontally)
                     .clickable { clickCount++ }
-            )*/
+            )
             // https://stackoverflow.com/questions/73654402/is-there-a-way-to-create-and-apply-a-style-to-multiple-elements-in-compose-like
-            val modifier = Modifier
+            /*val modifier = Modifier
                 .shadow(1.dp, CircleShape)
                 .border(1.dp, Color.Red)
                 .size(100.dp)
                 .background(Color.Yellow)
                 .padding(10.dp)
 
-            //Text(text = "Something", modifier = modifier)
-            //Text(text = "Something else", modifier = modifier)
+            Text(text = "Something", modifier = modifier)
+            Text(text = "Something else", modifier = modifier)*/
         }
     }
 }
